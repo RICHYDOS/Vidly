@@ -24,7 +24,12 @@ router.post('/', (req, res) => {
 
     genres.push(genre);
     res.send(genre);
+})
 
+router.get('/:id', (req, res) => {
+    const genre = genres.find(g => g.id === parseInt(req.params.id));
+    if(!genre) return res.status(404).send("Genre Not Found");
+    res.send(genre);
 })
 
 router.put('/:id', (req, res) => {
