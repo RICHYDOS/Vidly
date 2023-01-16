@@ -14,6 +14,7 @@ const genreSchema = new mongoose.Schema({
 
 const Genre = mongoose.model("Genre", genreSchema);
 
+// Had to add async because Im using promises
 router.get('/', async (req, res) => {
     const genres = await Genre.find().sort({ name: 1 });
     res.send(genres);
