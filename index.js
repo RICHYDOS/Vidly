@@ -9,7 +9,7 @@ mongoose.set('strictQuery', true);
 mongoose.connect('mongodb://localhost/vidly')
     .then(() => console.log("Connected to MongoDb..."))
     .catch(err => console.error("Could not connect to MongoDb", err));
-    
+
 app.use(express.json());
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
