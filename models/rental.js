@@ -55,7 +55,7 @@ const rentalSchema = new mongoose.Schema({
     },
 
     rentalFee: {
-        type: Numeber,
+        type: Number,
         min: 0,
     },
 });
@@ -65,16 +65,12 @@ const Rental = mongoose.model("Rental", rentalSchema);
 function validateRentals(rental) {
     // What the Client sends
     const schema = Joi.object({
-        title: Joi.string().min(1).max(50).required(),
-
-        // Expect client to send only the id of the Genre. 
-        genreId: Joi.string().required(),
-        numberInStock: Joi.number().min(0).required(),
-        dailyRentalRate: Joi.number().min(0).required(),
+        customerId: Joi.string().required(),
+        movieId: Joi.string().required(),
     })
 
-    return schema.validate(movie);
+    return schema.validate(rental);
 };
 
-exports.Movie = Movie;
-exports.validate = validateMovies;
+exports.Rental = Rental;
+exports.validate = validateRentals;
