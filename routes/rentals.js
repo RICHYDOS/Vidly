@@ -2,8 +2,11 @@ const mongoose = require('mongoose');
 const {Rental, validate} = require('../models/rental');
 const {Movie} = require('../models/movie');
 const {Customer} = require('../models/customer');
+const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
+
+Fawn.init('mongodb://localhost:27017/');
 
 router.get('/', async (req, res) => {
     const rentals = await Rental.find().sort({ dateOut: -1 });
@@ -36,12 +39,31 @@ router.post('/', async (req, res) => {
         },
     });
 
-    rental = await rental.save();
-// Errors could arise becasue we need to save twice so we implement transactions
-    movie.numberInStock--;
-    movie.save();
+    let task = Fawn.Task();
 
-    res.send(rental);
+    task.save('rentals', rental)
+        .update('movies', {_id: movie._id}, {$inc: {numberInStock: -1}})
+        .run()
+        .then(function(){
+            res.send(rental);
+        })
+        .catch(function(err){
+            res.status(500).send("Something Failed");
+            console.log(err);
+        });
+
+    // try{
+    //     new Fawn.Task()
+    //         .save('rentals', rental) // In quotes, actuall name of the rentals collection as seen in MongoDB
+    //         .update('movies', {_id: movie._id}, {$inc: {numberInStock: -1}})
+    //         .run();
+
+    //     res.send(rental);
+    // }
+    // catch(ex){
+    //     res.status(500).send('Something Failed.');
+    // }
+    
 })
 
 router.get('/:id', async (req, res) => {
