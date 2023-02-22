@@ -48,5 +48,6 @@ function validateMovies(movie) {
     return schema.validate(movie);
 };
 
+exports.movieSchema = movieSchema;
 exports.Movie = Movie;
 exports.validate = validateMovies;

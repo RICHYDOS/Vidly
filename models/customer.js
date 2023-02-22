@@ -32,5 +32,6 @@ function validateCustomers(customer) {
     return schema.validate(customer);
 };
 
+exports.customerSchema = customerSchema;
 exports.Customer = Customer;
 exports.validate = validateCustomers;
