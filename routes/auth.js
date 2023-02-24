@@ -1,3 +1,5 @@
+const Joi = require('joi');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 const {User} = require('../models/user');
@@ -21,7 +23,10 @@ router.post('/', async (req, res) => {
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) return res.status(400).send("Invalid Email or Password");
 
-    res.send(true);
+    // Temporaily hardcoding the private key for testing purposes
+    // Generating a token
+    const token = jwt.sign({_id: user._id}, 'jwtPrivateKey');
+    res.send(token);
 
 });
 
@@ -31,7 +36,7 @@ function validate(req) {
         password: Joi.string().min(8).max(255).required(),
     })
 
-    return schema.validate(user);
+    return schema.validate(req);
 };
 
 module.exports = router;
