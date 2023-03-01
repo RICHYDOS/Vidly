@@ -1,3 +1,4 @@
+const auth = require("../middleware/auth");
 const mongoose = require('mongoose');
 const {Genre, validate} = require('../models/genre');
 const express = require('express');
@@ -9,7 +10,7 @@ router.get('/', async (req, res) => {
     res.send(genres);
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const result = validate(req.body);
     if (result.error) return res.status(400).send(result.error.details[0].message);
 
@@ -26,7 +27,7 @@ router.get('/:id', async (req, res) => {
     res.send(genre);
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const result = validate(req.body);
     if (result.error) return res.status(400).send(result.error.details[0].message);
 
@@ -37,7 +38,7 @@ router.put('/:id', async (req, res) => {
     res.send(genre);
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const genre = await Genre.findByIdAndRemove(req.params.id);
     if (!genre) return res.status(404).send("Genre Not Found");
     res.send(genre);
