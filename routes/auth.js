@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 const {User} = require('../models/user');
@@ -25,7 +24,7 @@ router.post('/', async (req, res) => {
 
     // Temporaily hardcoding the private key for testing purposes
     // Generating a token
-    const token = jwt.sign({_id: user._id}, 'jwtPrivateKey');
+    const token = user.generateAuthToken();
     res.send(token);
 
 });

@@ -24,7 +24,9 @@ router.post('/', async (req, res) => {
     // });
     // But if there are many more properties, in order to avoid this repetitiveness, one can use lodash
 
-    res.send(_.pick(user, ['_id', 'name', 'email']));
+    const token = user.generateAuthToken();
+
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
 
 });
 
