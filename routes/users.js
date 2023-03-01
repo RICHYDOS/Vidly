@@ -1,9 +1,18 @@
+const auth = require("../middleware/auth");
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
 const { User, validate } = require('../models/user');
 const _ = require('lodash');
 const express = require('express');
 const router = express.Router();
+
+// Route to get a particular user. We did not use "/:id" because a client
+// could easily send the id of an=other user to view their details, instead
+// At this endpoint we will get the user id from their jsonwebtoken
+router.get('/me', auth, async (req, res) => {
+    const user = await User.findById(req.user._id).select("-password");
+    res.send(user);
+});
 
 router.post('/', async (req, res) => {
     const result = validate(req.body);
