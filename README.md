@@ -9,3 +9,5 @@ CRUD operations for both users/customers and movies
 Leveraging Jsonwebtoken for authentication and authorization
 Along with some additional topics 👌
 While still a novice, I recognize that my future projects will explore these concepts more in-depth 😁
+
+Ps. Some of the things here might look a little outdated because of the tutorial I used.
